@@ -78,7 +78,7 @@ The inner text based on the given CSS selector or the entire text for the curren
 * **output** - An existing context property to place the text into or flow output (default). When using a flow output, the text will be available in msg.payload.
 ___
 ##### getUnfluff
-The unfluff content (an automatic web page content extractor) for the given web pages HTML source. See [node-unfluff](https://github.com/ageitgey/node-unfluff) for details.
+The unfluff content (an automatic web page content extractor) for the current HTML source. See [node-unfluff](https://github.com/ageitgey/node-unfluff) for details.
 * **output** - An existing context property to place the unfluff content into or a flow output (default). When using a flow output, the unfluff data will be available in msg.payload.
 ___
 ##### getURL
