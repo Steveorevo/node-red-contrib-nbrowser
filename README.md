@@ -1,7 +1,7 @@
 # node-red-contrib-nbrowser
 Provides a virtual web browser (a.k.a. "headless browser") appearing as a node. The web browser is based on the open source electron.atom.io and nightmarejs.org projects. The node edit panel provides the ability to easily navigate and automate most web browser operations as well as display an interactive window for easy debugging. In headless mode the browser omits downloading images and is highly optimized for speed and performance. This makes testing and automation incredibly fast and versatile. Extended features include the ability to inspect DOM elements, upload & download files, and answer common dialogs.  
 
-By default, a node will use or create the web browser "instance" in **msg.nbrowser** property and will have a pre-added goto method to navigate to the URL from an incoming **msg.payload**. After methods have been applied, the resulting HTML source is output in the **msg.payload**. Developers have the option of analyzing content in their flow before navigating or taking additional actions on a given page by simply dropping additional **nbrowser** nodes in their flow diagram. When used with the **[node-red-contrib-string](https://github.com/steveorevo/node-red-contrib-string)** node and the **switch** node, **nbrowser** enables an unprecedented level of versatility and functionality to the already powerful Node-RED set of capabilities.
+By default, a node will use or create the web browser "instance" in **msg.nbrowser** property and will have a pre-added goto method to navigate to the URL from an incoming **msg.payload**. After methods have been applied, the resulting HTML source is output in the **msg.payload**. Developers have the option of analyzing content in their flow before navigating or taking additional actions on a given page by simply dropping additional nbrowser nodes in their flow diagram. When used with the **[node-red-contrib-string](https://github.com/steveorevo/node-red-contrib-string)** node and the **switch** node, **nbrowser** enables an unprecedented level of versatility and functionality to the already powerful Node-RED set of capabilities.
 
 `WARNING: nbrowser enables powerful & very easy web automation.`
 `Please use nbrowser responsibly!!!`
@@ -15,13 +15,15 @@ The **nbrowser** node will appear in the palette under the advanced group.
 
 ## Options
 ***Show browser window instance?***
+
 Displays the Electron browser instance to aid development. Use Command (Mac) / Ctrl (Windows) + Shift + I to display developer tools & the DOM inspector. Note: image downloading is suppressed in headless mode but is turned on for convenience when this option is enabled.
 
 ***Close instance after methods?***
-IMPORTANT! Use this option to destroy the browser instance after processing all methods or place an nbrowser node at the end of your flow with this option enabled to close an existing instance window. This is esspecialy important when running in headless mode; otherwise it is not physically possible to close the window.
+
+IMPORTANT! Use this option to destroy the browser instance after processing all methods or place an nbrowser node at the end of your flow with this option enabled to close an existing instance window. This is especially important when running in headless mode; otherwise it is not physically possible to close the window.
 
 ## Methods
-The following methods can be used to navigate or analyze a given web page. Many of the methods below require a valid CSS selector to take effect. Unlike NightmereJS or PhantomJS, nbrowser will wait for the given CSS selector to appear; eliminating the need to insert additional wait methods. When present, a selector paramter may come from a literal string or any property of global, flow, or msg contexts. Selectors that fail to appear will generate a catchable timeout error.
+The following methods can be used to navigate or analyze a given web page. Many of the methods below require a valid CSS selector to take effect. Unlike NightmereJS or PhantomJS, nbrowser will wait for the given CSS selector to appear; eliminating the need to insert additional wait methods. When present, a selector parameter may come from a literal string or any property of global, flow, or msg contexts. Selectors that fail to appear will generate a catchable timeout error.
 
 Additional parameters may include a flow output or a context property to store an existing value. If a flow output is selected, the resulting value is often delivered in the msg.payload context property.
 ___
@@ -53,7 +55,7 @@ Retrieve the headers for the given web page.
 * **output** - An existing context property to place the headers into or flow output (default). When using a flow output, the headers will be available in msg.payload.
 ___
 ##### getHTML
-The inner HTML source code based on the given CSS selector or the entire source code for the current web page if the CSS selector paramter is left blank.
+The inner HTML source code based on the given CSS selector or the entire source code for the current web page if the CSS selector parameter is left blank.
 * **selector** - The CSS selector to retrieve HTML source from or blank for the entire web page.
 * **output** - An existing context property to place the HTML source into or flow output (default). When using a flow output, the source will be available in msg.payload.
 ___
