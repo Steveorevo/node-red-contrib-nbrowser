@@ -80,7 +80,7 @@ Adds a header override for all HTTP requests. If header is undefined, the header
 ___
 ##### evalJavaScript
 Evaluates the given JavaScript code for the current web page and returns the results.
-source code - The source code to evaluate.
+* **source code** - The source code to evaluate.
 * **output** - An existing context property to return results to or flow output (default). When using a flow output, the results will be available in msg.payload.
 ___
 ##### injectJavaScript
@@ -147,7 +147,7 @@ ___
 ##### select
 Changes the selector dropdown element to the option with attribute [value=option].
 * **selector** - The CSS selector for the selector dropdown element.
-option - The value to set for the given selector dropdown element.
+* **option** - The value to set for the given selector dropdown element.
 ___
 ##### type
 Enters text into the given DOM element. This method mimics a user typing in a textbox and will emit the proper keyboard events.
