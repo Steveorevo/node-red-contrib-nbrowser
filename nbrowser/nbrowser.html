@@ -1,0 +1,923 @@
+<style>
+span.exclaim {
+  font-weight: 75%;
+  color:darkred;
+}
+ul li span.param {
+  font-weight: bolder;
+}
+</style>
+<script type="text/x-red" data-template-name="nbrowser">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+
+    <div class="form-row">
+        <label for="node-input-prop"><i class="fa fa-sign-in"></i> <span>Instance</span></label>
+        <input type="text" id="node-input-prop" style="width:70%">
+        <input type="hidden" id="node-input-object">
+    </div>
+    <div class="form-row" id="node-tail-show">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-show" placeholder="Name" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-show" style="width: 70%;">
+          <span>Show browser window instance?</span>
+        </label>
+    </div>
+    <div class="form-row" style="margin-bottom:0;">
+        <label><i class="fa fa-list"></i> <span>Methods</span></label>
+    </div>
+    <div class="form-row node-input-method-container-row">
+        <ol id="node-input-method-container"></ol>
+    </div>
+    <div class="form-row">
+        <label for="node-input-propout"><i class="fa fa-sign-out"></i> <span>Source</span></label>
+        <input type="text" id="node-input-propout" style="width:70%">
+        <input type="hidden" id="node-input-objectout">
+    </div>
+    <div class="form-row" id="node-tail-close">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-close" placeholder="Name" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-close" style="width: 70%;">
+          <span>Close instance after methods?</span>
+        </label>
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="nbrowser">
+  <p>Provides a virtual web browser (a.k.a. "headless browser") appearing as a node. By default, a node will use or create the web browser "instance" in <code>msg.nbrowser</code> and will have a pre-added <code>goto</code> method to navigate to the URL from an incoming <code>msg.payload</code>.</p>
+
+  <h3>Options</h3>
+  <dl class="message-properties">
+      <dt class="optional">Show browser window instance?</dt>
+      <dd>Displays the Electron browser instance to aid development. Use Command (Mac) / Ctrl (Windows) + Shift + I to display developer tools &amp; the DOM inspector. Note: image downloading is suppressed in headless mode but is turned on for convenience when this option is enabled.</dd>
+      <dt class="optional">Close instance after methods?</dt> <dd><span class="exclaim">IMPORTANT!</span> Use this option to destroy the browser instance after processing all methods or place an <code>nbrowser</code> node at the end of your flow with this option enabled to close an existing instance window. This is esspecialy important when running in headless mode; otherwise it is not
+      physically possible to close the window.</dd>
+  </dl>
+
+  <h3>Methods</h3>
+    <dl class="message-properties">
+        <dd>
+          <p>The following methods can be used to navigate or analyze a given web page. Many of the methods below require a valid
+          CSS selector to take effect. Unlike NightmereJS or PhantomJS, <code>nbrowser</code> will wait for the given CSS selector to appear; eliminating the need to insert additional <code>wait</code> methods. When present, a selector paramter may come from a literal string or any property of <code>global</code>, <code>flow</code>, or <code>msg</code> contexts. Selectors that fail to appear will generate a catchable timeout error.<p>
+          <p>Additional parameters may include a flow output or a context property to store an existing value. If a flow output is selected, the resulting value is often delivered in the <code>msg.payload</code> context property.</p>
+        </dd>
+        <dt>check</dt>
+        <dd>
+        Used to check or uncheck a checkbox.
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector for the checkbox.</li>
+              <li><span class="param">boolean</span> - True to check the checkbox or false to uncheck it.</li>
+          </ul>
+        </dd>
+        <dt>click</dt>
+        <dd>
+        Used to simulate a click event.
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector for a DOM element to click.</li>
+          </ul>
+        </dd>
+        <dt>clearCookie</dt>
+        <dd>
+        Used to clear a given named cookie. Providing no name will clear all cookies.
+          <ul>
+              <li><span class="param">name</span> - The name of the cookie to clear or leave blank to clear all cookies.</li>
+          </ul>
+        </dd>
+        <dt>setCookie</dt>
+        <dd>
+        Set the value of a given cookie.
+          <ul>
+              <li><span class="param">name</span> - The name of the cookie to set.</li>
+              <li><span class="param">value</span> - The value to set the cookie.</li>
+          </ul>
+        </dd>
+        <dt>getCookie</dt>
+        <dd>
+        Retrieve the value of a named cookie.
+          <ul>
+              <li><span class="param">name</span> - The name of the cookie to retrieve.</li>
+              <li><span class="param">output</span> - An existing context property to place the value into or a flow output.</li>
+          </ul>
+        </dd>
+        <dt>getHeaders</dt>
+        <dd>
+        Retrieve the headers for the given web page.
+          <ul>
+              <li><span class="param">output</span> - An existing context property to place the headers into or flow output (default). When using a flow output, the headers will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>getHTML</dt>
+        <dd>
+        The inner HTML source code based on the given CSS selector or the entire source code for the current web page if the CSS selector paramter is left blank.
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector to retrieve HTML source from or blank for the entire web page.</li>
+              <li><span class="param">output</span> - An existing context property to place the HTML source into or flow output (default). When using a flow output, the source will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>getURL</dt>
+        <dd>
+        The URL of the current web page.
+          <ul>
+              <li><span class="param">output</span> - An existing context property to place the URL into or flow output (default). When using a flow output, the URL will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>goBack</dt>
+        <dd>
+        Navigate the browser to the previous web page.
+        </dd>
+        <dt>goForward</dt>
+        <dd>
+        Navigate the browser forward to a previously visited web page.
+        </dd>
+        <dt>gotoURL</dt>
+        <dd>
+        Navigate the browser to the web page at the given URL.
+          <ul>
+              <li><span class="param">URL</span> - The URL for the web page to navigate to.</li>
+          </ul>
+        </dd>
+        <dt>header</dt>
+        <dd>
+        Adds a header override for all HTTP requests. If header is undefined, the header overrides will be reset.
+          <ul>
+              <li><span class="param">name</span> - A named header item.</li>
+              <li><span class="param">value</span> - A value to set for the given header item.</li>
+          </ul>
+        </dd>
+        <dt>evalJavaScript</dt>
+        <dd>
+        Evaluates the given JavaScript code for the current web page and returns the results.
+          <ul>
+              <li><span class="param">source code</span> - The source code to evaluate.</li>
+              <li><span class="param">output</span> - An existing context property to return results to or flow output (default). When using a flow output, the results will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>injectJavaScript</dt>
+        <dd>
+        Injects the given file containing JavaScript into the current web page.
+          <ul>
+              <li><span class="param">file</span> - The complete path and filename of the JavaScript file to inject.</li>
+          </ul>
+        </dd>
+        <dt>insert</dt>
+        <dd>
+        Inserts text into a selected input text element. Similar to the <code>type</code> method but faster and does not generate
+        keyboard events.
+          <ul>
+              <li><span class="param">selector</span> - A selector for the input text element.</li>
+              <li><span class="param">characters</span> - The text to set the value of the input text element to.</li>
+          </ul>
+        </dd>
+        <dt>isVisible</dt>
+        <dd>
+        Returns whether the selected DOM element is visible (true) or not (false).
+          <ul>
+              <li><span class="param">selector</span> - A selector for a DOM element.</li>
+              <li><span class="param">output</span> - An existing context property to return results to or flow output (default). When using a flow output, the results will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>isPresent</dt>
+        <dd>
+        Returns whether the selected DOM element is present (true) or not (false).
+          <ul>
+              <li><span class="param">selector</span> - A selector for a DOM element.</li>
+              <li><span class="param">output</span> - An existing context property to return results to or flow output (default). When using a flow output, the results will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>mouse</dt>
+        <dd>
+        Used to simulate a mouse event on a selected DOM element.
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector to perform the mouse event on.</li>
+              <li><span class="param">event</span> - A mouse event to perform; mouseUp, mouseDown, mouseOver, or mouseOut.</li>
+          </ul>
+        </dd>
+        <dt>onAuthenticate</dt>
+        <dd>
+        Sets the username and password for accessing a web page using basic authentication. Be sure to set this before using the gotoURL method.
+          <ul>
+              <li><span class="param">username</span> - The username for authentication.</li>
+              <li><span class="param">password</span> - The password for authentication.</li>
+          </ul>
+        </dd>
+        <dt>onAlert</dt>
+        <dd>
+        By default, <code>nbrowser</code> will ignore alert dialogs. Use this method to retrieve an alert dialog message.
+          <ul>
+              <li><span class="param">output</span> - An existing context property to return the alert message to or flow output (default). When using a flow output, the alert message will be in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>onConfirm</dt>
+        <dd>
+        Use this method to answer a confirm dialog. By default, <code>nbrowser</code> will ignore confirm dialogs. Be sure to
+        add this method before the <code>gotoURL</code> method or prior to the appearance of the confirm dialog.
+          <ul>
+              <li><span class="param">answer</span> - The answer for the confirm dialog (true for OK, or false for Cancel).</li>
+              <li><span class="param">output</span> - An existing context property to return the confirm results to or flow output (default). When using a flow output, the confirm results will be in <code>msg.payload</code>. The given results will
+              contain an object with the confirm dialog <code>message</code>, and <code>reply</code>.</li>
+          </ul>
+        </dd>
+        <dt>onDownload</dt>
+        <dd>
+        Use this method to save a downloaded item from the web. Be sure to add this method before the <code>gotoURL</code> method or prior to invoking a download link.
+          <ul>
+              <li><span class="param">file</span> - The path and filename of the item to be downloaded.</li>
+              <li><span class="param">output</span> - An existing context property to return the download results to or flow output (default). When using a flow output, the download results will be in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>onPrompt</dt>
+        <dd>
+        Use this method to answer a prompt dialog. By default, <code>nbrowser</code> will ignore prompt dialogs. Be sure to
+        add this method before the <code>gotoURL</code> method or prior to the appearance of the prompt dialog.
+          <ul>
+              <li><span class="param">answer</span> - The answer to furnish the prompt dialog with.</li>
+              <li><span class="param">output</span> - An existing context property to return the prompt results to or flow output (default). When using a flow output, the prompt results will be in <code>msg.payload</code>. The given results will
+              contain an object with the prompt dialog <code>message</code>, <code>default</code>, and <code>reply</code>.</li>
+          </ul>
+        </dd>
+        <dt>refresh</dt>
+        <dd>
+        Refresh the current web page.
+        </dd>
+        <dt>saveAs</dt>
+        <dd>
+        Saves the current web page as a screenshot image, HTML, or PDF. When HTML is selected, an adjacent folder of the same filename will be generated containing any images and resources to render the page offline.
+          <ul>
+              <li><span class="param">type</span> - The file type to generate; image, HTML, or PDF.</li>
+              <li><span class="param">file</span> - A path and filename for the saved web page.</li>
+          </ul>
+        </dd>
+        <dt>scrollTo</dt>
+        <dd>
+        Scrolls the web page to desired position. top and left are always relative to the top left corner of the document.
+          <ul>
+              <li><span class="param">top</span> - The top number of pixels to scroll the web page.</li>
+              <li><span class="param">left</span> - The left number of pixels to scroll the web page.</li>
+          </ul>
+        </dd>
+        <dt>select</dt>
+        <dd>
+        Changes the selector dropdown element to the option with attribute [value=option].
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector for the selector dropdown element.</li>
+              <li><span class="param">option</span> - The value to set for the given selector dropdown element.</li>
+          </ul>
+        </dd>
+        <dt>type</dt>
+        <dd>
+        Enters text into the given DOM element. This method mimics a user typing in a textbox and will emit the proper keyboard events.
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector for the desired text input element.</li>
+              <li><span class="param">characters</span> - The text to type into the element.</li>
+          </ul>
+        </dd>
+        <dt>upload</dt>
+        <dd>
+        Uploads a file to the website. A selector for the given input[type="file"] must be provided. Be sure to add this method before the upload link is invoked.
+          <ul>
+              <li><span class="param">selector</span> - The selector of the file input type; i.e. input[type="file"].</li>
+              <li><span class="param">file</span> - The filename and path of the file to upload to the website.</li>
+          </ul>
+        </dd>
+        <dt>userAgent</dt>
+        <dd>
+        Sets the useragent used by electron.
+          <ul>
+              <li><span class="param">useragent</span> - The useragent to use when communicating to the web server.</li>
+          </ul>
+        </dd>
+        <dt>viewport</dt>
+        <dd>
+        Sets the viewport size of the web browser window. This value will influence the appearance of the web page when using the <code>saveAs</code> method.
+          <ul>
+              <li><span class="param">width</span> - The width in pixels for the web browser window size.</li>
+              <li><span class="param">height</span> - The height in pixels for the web browser window size.</li>
+          </ul>
+        </dd>
+        <dt>wait</dt>
+        <dd>
+        The number of seconds to wait or the CSS selector to wait for to appear in the given web page. If a numeric is supplied,
+        it is assumed to be the number of seconds to wait before executing subsequent methods.
+          <ul>
+              <li><span class="param">selector or seconds</span> - The CSS selector to wait for to appear or the number of seconds to wait.</li>
+          </ul>
+        </dd>
+    </dl>
+  <h3>Utility Functions</h3>
+  <ul>
+      <li><span class="param">removeTargetAttr</span> - is a utility function that is callable from the evalJavaScript method. This function is useful to prevent a new window from spawning when clicking an anchor link. Instead, the existing browser window
+      will be used for navigation.
+      </li>
+  </ul>
+  <h3>References</h3>
+  <ul>
+      <li>The method operations are derived from open source <a href="http://nightmarejs.org" target=_blank>NightmareJS</a> project.</li>
+      <li>The official <a href="https://github.com/Steveorevo/node-red-contrib-nbrowser" target=_blank>node-red-contrib-nbrowser</a> project on GitHub.</li>
+  </ul>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('nbrowser',{
+        category: 'advanced',
+        color: '#C0DEED',
+        defaults: {
+            name: {value:""},
+            methods: [],
+            prop: {value: 'nbrowser'},
+            propout: {value: 'payload'},
+            object: {value: 'msg'},
+            objectout: {value: 'msg'},
+            close: {value: false},
+            show: {value: false},
+            outputs: {value: 1}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "white-globe.png",
+        label: function() {
+            return this.name||"nbrowser";
+        },
+        labelStyle: function() {
+            return this.name?"node_label_italic":"";
+        },
+        oneditprepare: function() {
+            var node = this;
+            var outputType = {
+                value:"output",
+                label:" → ",
+                hasValue: false
+            };
+            var mouseActionType = {
+                value:"mouseAction",
+                icon:"icons/node-red-contrib-nbrowser/mouseaction.png",
+                options:["down", "up", "over", "out"]
+            };
+            var saveActionType = {
+                value:"saveAction",
+                icon:"icons/node-red-contrib-nbrowser/saveaction.png",
+                options:["image","html","pdf"]
+            };
+            var methods = [
+                {
+                  name: "check",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'bool',
+                    types:['bool']
+                  }]
+                },
+                {
+                  name: "click",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  }]
+                },
+                {
+                  name: "clearCookie",
+                  func: "cookies.clear",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'name or blank for all'
+                  }]
+                },
+                {
+                  name: "setCookie",
+                  func: "cookies.set",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'name'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'value'
+                  }]
+                },
+                {
+                  name: "getCookie",
+                  func: "cookies.get",
+                  return: 'str',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'name'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "getHeaders",
+                  return: 'json',
+                  params: [{
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "getHTML",
+                  return: 'str',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector or blank for all'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "getURL",
+                  func: "url",
+                  return: 'str',
+                  params: [{
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "goBack",
+                  func: "back",
+                  return: null,
+                  params: []
+                },
+                {
+                  name: "goForward",
+                  func: "forward",
+                  return: null,
+                  params: []
+                },
+                {
+                  name: "gotoURL",
+                  func: "goto",
+                  return: 'json',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'URL'
+                  }]
+                },
+                {
+                  name: "header",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'name'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'value'
+                  }]
+                },
+                {
+                  name: "evalJavaScript",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'source code'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "injectJavaScript",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'file'
+                  }]
+                },
+                {
+                  name: "insert",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'characters'
+                  }]
+                },
+                {
+                  name: "isVisible",
+                  func: "visible",
+                  return: 'bool',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "isPresent",
+                  func: "exists",
+                  return: 'bool',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "mouse",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'mouseAction',
+                    types:[mouseActionType]
+                  }]
+                },
+                {
+                  name: "onAuthenticate",
+                  func: "authenticate",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'username'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'password'
+                  }]
+                },
+                {
+                  name: "onAlert",
+                  return: 'bool',
+                  params: [{
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "onConfirm",
+                  return: 'bool',
+                  params: [{
+                    default:'bool',
+                    types:['msg','flow','global','bool'],
+                    placeholder:'property'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "onDownload",
+                  return: 'str',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'file'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "onPrompt",
+                  func: "onPrompt",
+                  return: 'str',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'answer'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "refresh",
+                  return: null,
+                  params: []
+                },
+                {
+                  name: "saveAs",
+                  return: null,
+                  params: [{
+                    default:'saveAction',
+                    types:[saveActionType],
+                    placeholder:'file'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'file'
+                  }]
+                },
+                {
+                  name: "scrollTo",
+                  return: null,
+                  params: [{
+                    default:'num',
+                    types:['msg','flow','global','num'],
+                    placeholder:'top'
+                  },
+                  {
+                    default:'num',
+                    types:['msg','flow','global','num'],
+                    placeholder:'left'
+                  }]
+                },
+                {
+                  name: "select",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'option'
+                  }]
+                },
+                {
+                  name: "type",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'characters'
+                  }]
+                },
+                {
+                  name: "upload",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector'
+                  },
+                  {
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'file'
+                  }]
+                },
+                {
+                  name: "userAgent",
+                  func: "useragent",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'agent'
+                  }]
+                },
+                {
+                  name: "viewport",
+                  return: null,
+                  params: [{
+                    default:'num',
+                    types:['msg','flow','global','num'],
+                    placeholder:'width'
+                  },
+                  {
+                    default:'num',
+                    types:['msg','flow','global','num'],
+                    placeholder:'height'
+                  }]
+                },
+                {
+                  name: "wait",
+                  return: null,
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector or seconds'
+                  }]
+                }
+            ];
+            $('#node-input-prop').typedInput({
+                default: 'msg',
+                typeField: $("#node-input-object"),
+                types:['flow','global','msg']
+            });
+            $('#node-input-propout').typedInput({
+                default: 'msg',
+                typeField: $("#node-input-objectout"),
+                types:['flow','global','msg']
+            });
+            $('#node-input-method-container').css('min-height','300px').css('min-width','450px').editableList({
+                addItem: function(container, i, method) {
+                    var row = $('<div/>', {class:"node-input-methods-applied"}).appendTo(container);
+                    var selectField = $('<select/>',{class:"node-input-method-type",style:"width:165px; margin-right:10px;"}).appendTo(row);
+                    for (var i=0; i < methods.length; i++) {
+                        if (typeof methods[i].func == 'undefined') {
+                            methods[i].func = methods[i].name;
+                        }
+                        selectField.append($("<option></option>").val(methods[i].func).text(methods[i].name));
+                    }
+
+                    // Build the parameter typedInput UI array by the given selectField
+                    var params = [];
+                    function updateMethodParamUI(name) {
+
+                      // Remove prior params UI elements
+                      params.forEach(function(p){
+                          p.remove();
+                      });
+
+                      // Find the method index by name
+                      for (var m=0; m < methods.length; m++) {
+                        if (methods[m].name == name) {
+                          if (typeof methods[m].func == 'undefined') {
+                              methods[m].func = methods[m].name;
+                          }
+                          selectField.val(methods[m].func);
+                          break;
+                        }
+                      }
+
+                      // Build the params UI elements
+                      methods[m].params.forEach(function(p, i) {
+                          if (i == 0) {
+                            var paramDiv = $('<div/>',{style:"display:inline;"}).appendTo(row);
+                          }else{
+                            var paramDiv = $('<div/>',{style:"display:block;margin-top:10px;"}).appendTo(row);
+                          }
+
+                          // Mark outputs
+                          if (i > 0) {
+                              if (p.default == 'output') {
+                                $('<div style="display:inline-block;margin:7px 0px 7px 64px;">Send result to:</div>').appendTo(paramDiv);
+                              }else{
+                                $('<div style="display:inline-block;margin:7px 0px 7px;min-height:16px;"></div>').appendTo(paramDiv);
+                              }
+                          }
+                          if (typeof p.placeholder == 'undefined'){
+                              p.placeholder = '';
+                          }
+                          $('<input/>',{class:"node-input-method-param" + i.toString(),
+                            type:"text",style:"width:222px;",
+                            placeholder:p.placeholder, typeDefault:p.default})
+                          .appendTo(paramDiv)
+                          .typedInput(p).parent().parent().css('float', 'right');
+
+                          // Recalc outputs on type change
+                          if (p.default == 'output') {
+                              $('input.node-input-method-param' + i.toString()).on('change', function() {
+                                  node.enumerateOutputs();
+                              });
+                          }
+                          params.push(paramDiv);
+                      });
+                    }
+
+                    // Build default append method's params on initial add or load method
+                    if (!method.name) {
+                        updateMethodParamUI('gotoURL');
+                    }else{
+                        updateMethodParamUI(method.name);
+
+                        //Fill out existing param data
+                        method.params.forEach(function(p, i){
+                            row.find(".node-input-method-param"+i).typedInput('type', p.type);
+                            row.find(".node-input-method-param"+i).typedInput('value', p.value);
+                        });
+                    }
+                    node.enumerateOutputs();
+                    node.resizeMethods();
+
+                    // Rebuild method's params on select change
+                    selectField.change(function() {
+                        updateMethodParamUI($(this).find('option:selected').text());
+                        node.enumerateOutputs();
+                        node.resizeMethods();
+                    });
+                },
+                removeItem: function() {
+                    node.enumerateOutputs();
+                },
+                sortItems: function() {
+                    node.enumerateOutputs();
+                },
+                removable: true,
+                sortable: true
+            });
+
+            // Resize fields
+            node.resizeMethods = function() {
+                var newWidth = $(".node-input-method-container-row").width();
+                newWidth = ((newWidth - 460) + 222).toString() + 'px';
+                var selector = '.node-input-methods-applied .red-ui-typedInput-container';
+                if ($(selector).length) {
+                    $(selector).css('width', newWidth);
+                }
+            };
+
+            // Re-number all outputs
+            node.enumerateOutputs = function() {
+                $('.node-input-methods-applied span:contains("→")').each(function(i) {
+                    $(this).html(" → " + (i + 1).toString());
+                });
+            };
+
+            // Create default if no methods present
+            if (!node.methods) {
+              node.methods = [{"name":"gotoURL","func":"gotoURL","params":[{"type":"msg","value":"payload"}]}];
+            }
+
+            // Load data
+            if (node.methods) {
+              node.methods.forEach(function(m){
+                  $('#node-input-method-container').editableList('addItem', m);
+              });
+            }
+        },
+        oneditresize: function() {
+            this.resizeMethods();
+        },
+        oneditsave: function() {
+            var methodItems = $("#node-input-method-container").editableList('items');
+            var methods = [];
+            var nOuts = 0;
+            methodItems.each(function(){
+                var method = {
+                  name: $(this).find("select.node-input-method-type option:selected").text(),
+                  func: $(this).find("select.node-input-method-type").val(),
+                  params: []
+                };
+                var i = 0;
+                while($(this).find(".node-input-method-param"+i).length) {
+                    var param = {};
+                    param.type = $(this).find(".node-input-method-param"+i).typedInput('type');
+                    if (param.type == 'output'){
+                        nOuts++;
+                        param.value = nOuts;
+                    }else{
+                        param.value = $(this).find(".node-input-method-param"+i).typedInput('value');
+                    }
+                    param.typeDefault = $(this).find(".node-input-method-param"+i).attr('typeDefault');
+                    method.params.push(param);
+                    i++;
+                }
+                methods.push(method);
+            });
+            this.methods = methods;
+            if ( false == $("#node-input-close").is(":checked") ) {
+                nOuts++;
+            }
+            this.outputs = nOuts;
+        }
+    });
+</script>

@@ -1,0 +1,32 @@
+{
+  "name": "node-red-contrib-nbrowser",
+  "version": "0.0.1",
+  "description": "Provides a high level browser automation node based on nightmarejs.org.",
+  "author": "Stephen J. Carnam <steveorevo@gmail.com>",
+  "license": "MIT",
+  "keywords": [
+    "node-red",
+    "browser",
+    "automation",
+    "electron",
+    "nightmarejs",
+    "phantomjs",
+    "selenium",
+    "scraping",
+    "testing"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Steveorevo/node-red-contrib-nbrowser.git"
+  },
+  "dependencies": {
+    "nightmare": "git://github.com/segmentio/nightmare.git",
+    "nightmare-download-manager": "git://github.com/rosshinkley/nightmare-download-manager.git",
+    "nightmare-upload": "git://github.com/rosshinkley/nightmare-upload.git"
+  },
+  "node-red": {
+    "nodes": {
+      "nbrowser": "nbrowser/nbrowser.js"
+    }
+  }
+}
