@@ -22,7 +22,8 @@
   "dependencies": {
     "nightmare": "git://github.com/segmentio/nightmare.git",
     "nightmare-download-manager": "git://github.com/rosshinkley/nightmare-download-manager.git",
-    "nightmare-upload": "git://github.com/rosshinkley/nightmare-upload.git"
+    "nightmare-upload": "git://github.com/rosshinkley/nightmare-upload.git",
+    "node-unfluff": "git://github.com/ageitgey/node-unfluff.git"
   },
   "node-red": {
     "nodes": {

@@ -176,6 +176,11 @@ module.exports = function(RED) {
                                     });
                                 }
                                 break;
+                            case 'getUnfluff':
+                                return nbrowser.evaluate(function() {
+                                    return document.documentElement.outerHTML;
+                                });
+                                break;
                             case 'evalJavaScript':
                                 return nbrowser.evaluate(function(s) {
                                     return eval(s);
@@ -257,6 +262,11 @@ module.exports = function(RED) {
                               r = nbrowser.headers;
                               processResults(r, m);
                               return true;
+                              break;
+                          case 'getUnfluff':
+                              var extractor = require('unfluff');
+                              r = extractor(r);
+                              processResults(r, m);
                               break;
                           case 'onAlert':
                               var fAlert = function(type, message) {

@@ -60,7 +60,7 @@ ul li span.param {
     <dl class="message-properties">
         <dd>
           <p>The following methods can be used to navigate or analyze a given web page. Many of the methods below require a valid
-          CSS selector to take effect. Unlike NightmereJS or PhantomJS, <code>nbrowser</code> will wait for the given CSS selector to appear; eliminating the need to insert additional <code>wait</code> methods. When present, a selector paramter may come from a literal string or any property of <code>global</code>, <code>flow</code>, or <code>msg</code> contexts. Selectors that fail to appear will generate a catchable timeout error.<p>
+          CSS selector to take effect. Unlike NightmereJS or PhantomJS, <code>nbrowser</code> will wait for the given CSS selector to appear; eliminating the need to insert additional <code>wait</code> methods. When present, a selector parameter may come from a literal string or any property of <code>global</code>, <code>flow</code>, or <code>msg</code> contexts. Selectors that fail to appear will generate a catchable timeout error.<p>
           <p>Additional parameters may include a flow output or a context property to store an existing value. If a flow output is selected, the resulting value is often delivered in the <code>msg.payload</code> context property.</p>
         </dd>
         <dt>check</dt>
@@ -110,7 +110,7 @@ ul li span.param {
         </dd>
         <dt>getHTML</dt>
         <dd>
-        The inner HTML source code based on the given CSS selector or the entire source code for the current web page if the CSS selector paramter is left blank.
+        The inner HTML source code based on the given CSS selector or the entire source code for the current web page if the CSS selector parameter is left blank.
           <ul>
               <li><span class="param">selector</span> - The CSS selector to retrieve HTML source from or blank for the entire web page.</li>
               <li><span class="param">output</span> - An existing context property to place the HTML source into or flow output (default). When using a flow output, the source will be available in <code>msg.payload</code>.</li>
@@ -118,10 +118,17 @@ ul li span.param {
         </dd>
         <dt>getText</dt>
         <dd>
-        The inner text based on the given CSS selector or the entire text for the current web page if the CSS selector paramter is left blank.
+        The inner text based on the given CSS selector or the entire text for the current web page if the CSS selector parameter is left blank.
           <ul>
               <li><span class="param">selector</span> - The CSS selector to retrieve text from or blank for the entire web page.</li>
               <li><span class="param">output</span> - An existing context property to place the text into or flow output (default). When using a flow output, the text will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
+        <dt>getUnfluff</dt>
+        <dd>
+        The unfluff content (an automatic web page content extractor) for the current HTML source. See <a href="https://github.com/ageitgey/node-unfluff" target="_blank">node-unfluff</a> for details.
+          <ul>
+              <li><span class="param">output</span> - An existing context property to place the unfluff data into or a flow output (default). When using a flow output, the unfluff data will be available in <code>msg.payload</code>.</li>
           </ul>
         </dd>
         <dt>getURL</dt>
@@ -462,6 +469,15 @@ ul li span.param {
                     placeholder:'selector or blank for all'
                   },
                   {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "getUnfluff",
+                  return: 'str',
+                  params: [{
                     default:'output',
                     types:['msg','flow','global',outputType],
                     placeholder:'property'

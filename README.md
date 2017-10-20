@@ -6,6 +6,19 @@ By default, a node will use or create the web browser "instance" in **msg.nbrows
 `WARNING: nbrowser enables powerful & very easy web automation.`
 `Please use nbrowser responsibly!!!`
 
+This might be useful for:
+
+* Reading and aggregating your favorite articles
+* Writing your own Instapaper clone
+* Testing your web sites
+
+Please don't use this for:
+
+* Taking over a country politically and/or socially
+* Stealing other peoples' intellectual property
+* Making crappy spam sites
+* Being a jerk
+
 ## Installation
 Run the following command in your Node-RED user directory (typically ~/.node-red):
 
@@ -58,6 +71,15 @@ ___
 The inner HTML source code based on the given CSS selector or the entire source code for the current web page if the CSS selector parameter is left blank.
 * **selector** - The CSS selector to retrieve HTML source from or blank for the entire web page.
 * **output** - An existing context property to place the HTML source into or flow output (default). When using a flow output, the source will be available in msg.payload.
+___
+##### getText
+The inner text based on the given CSS selector or the entire text for the current web page if the CSS selector parameter is left blank.
+* **selector** - The CSS selector to retrieve text from or blank for the entire web page.
+* **output** - An existing context property to place the text into or flow output (default). When using a flow output, the text will be available in msg.payload.
+___
+##### getUnfluff
+The unfluff content (an automatic web page content extractor) for the given web pages HTML source. See [node-unfluff](https://github.com/ageitgey/node-unfluff) for details.
+* **output** - An existing context property to place the unfluff content into or a flow output (default). When using a flow output, the unfluff data will be available in msg.payload.
 ___
 ##### getURL
 The URL of the current web page.
