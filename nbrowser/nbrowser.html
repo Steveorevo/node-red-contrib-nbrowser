@@ -116,6 +116,14 @@ ul li span.param {
               <li><span class="param">output</span> - An existing context property to place the HTML source into or flow output (default). When using a flow output, the source will be available in <code>msg.payload</code>.</li>
           </ul>
         </dd>
+        <dt>getText</dt>
+        <dd>
+        The inner text based on the given CSS selector or the entire text for the current web page if the CSS selector paramter is left blank.
+          <ul>
+              <li><span class="param">selector</span> - The CSS selector to retrieve text from or blank for the entire web page.</li>
+              <li><span class="param">output</span> - An existing context property to place the text into or flow output (default). When using a flow output, the text will be available in <code>msg.payload</code>.</li>
+          </ul>
+        </dd>
         <dt>getURL</dt>
         <dd>
         The URL of the current web page.
@@ -433,6 +441,20 @@ ul li span.param {
                 },
                 {
                   name: "getHTML",
+                  return: 'str',
+                  params: [{
+                    default:'str',
+                    types:['msg','flow','global','str'],
+                    placeholder:'selector or blank for all'
+                  },
+                  {
+                    default:'output',
+                    types:['msg','flow','global',outputType],
+                    placeholder:'property'
+                  }]
+                },
+                {
+                  name: "getText",
                   return: 'str',
                   params: [{
                     default:'str',

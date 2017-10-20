@@ -104,9 +104,10 @@ module.exports = function(RED) {
                     });
 
                     // Wait for elements to appear first on these commands
-                    if (['check','select','click','getHTML','upload',
+                    if (['check','select','click','getHTML','getText','upload',
                          'insert','mouse','select','type'].indexOf(m.name) != -1) {
-                          if ( false == (m.name == 'getHTML' && args[0] == '')) {
+                          if ( false == (m.name == 'getHTML' && args[0] == '') &&
+                               false == (m.name == 'getText' && args[0] == '')) {
                               p = p.then(function() {
                                   ito = setTimeout(function(){
                                       let w = args[0];
@@ -161,6 +162,17 @@ module.exports = function(RED) {
                                 }else{
                                     return nbrowser.evaluate(function() {
                                         return document.documentElement.outerHTML;
+                                    });
+                                }
+                                break;
+                            case 'getText':
+                                if (args[0] != '') {
+                                    return nbrowser.evaluate(function(s) {
+                                        return document.querySelector(s).innerText;
+                                    }, args[0]);
+                                }else{
+                                    return nbrowser.evaluate(function() {
+                                        return document.documentElement.outerText;
                                     });
                                 }
                                 break;
