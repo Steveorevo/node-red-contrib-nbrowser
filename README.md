@@ -118,7 +118,7 @@ By default, nbrowser will ignore alert dialogs. Use this method to retrieve an a
 ___
 ##### onConfirm
 Use this method to answer a confirm dialog. By default, nbrowser will ignore confirm dialogs. Be sure to add this method before the gotoURL method or prior to the appearance of the confirm dialog.
-answer - The answer for the confirm dialog (true for OK, or false for Cancel).
+* **answer** - The answer for the confirm dialog (true for OK, or false for Cancel).
 * **output** - An existing context property to return the confirm results to or flow output (default). When using a flow output, the confirm results will be in msg.payload. The given results will contain an object with the confirm dialog message, and reply.
 ___
 ##### onDownload
