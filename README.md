@@ -198,5 +198,5 @@ The number of seconds to wait or the CSS selector to wait for to appear in the g
 **removeTargetAttr** - is a utility function that is callable from the evalJavaScript method. This function is useful to prevent a new window from spawning when clicking an anchor link. Instead, the existing browser window will be used for navigation.
 
 ## References
-The method operations are derived from open source [NightmareJS](http://http://www.nightmarejs.org) project.
+The method operations are derived from open source [NightmareJS](http://www.nightmarejs.org) project.
 The official [node-red-contrib-nbrowser](https://github.com/steveorevo/node-red-contrib-nbrowser) project on GitHub.
