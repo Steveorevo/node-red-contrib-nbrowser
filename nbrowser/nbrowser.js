@@ -13,7 +13,7 @@ module.exports = function(RED) {
             clearTimeout(ito);
 
             // Create new or use existing browser
-            if (typeof nbrowser == 'undefined') {
+            if (typeof nbrowser == 'undefined' || nbrowser == null) {
                 nbrowser = Nightmare({
                     electronPath: require('../../electron'),
                     dock: config.show,
@@ -363,7 +363,10 @@ module.exports = function(RED) {
                 // Close instance after Methods
                 if (config.close) {
                     p = p.then(function(r) {
-                        return nbrowser.end();
+                        return nbrowser.end().then(function(){
+                            delete nbrowser;
+                            setContextPropertyValue(config.object, config.prop, null);
+                        });
                     });
                 }else{
                   // Pass the original message object along
