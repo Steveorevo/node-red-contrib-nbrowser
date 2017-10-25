@@ -15,7 +15,7 @@ module.exports = function(RED) {
             // Create new or use existing browser
             if (typeof nbrowser == 'undefined') {
                 nbrowser = Nightmare({
-                    electronPath: require('../node_modules/electron'),
+                    electronPath: require('../../electron'),
                     dock: config.show,
                     show: config.show,
                     webPreferences: {
