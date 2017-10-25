@@ -3,8 +3,10 @@ Provides a virtual web browser (a.k.a. "headless browser") appearing as a node. 
 
 By default, a node will use or create the web browser "instance" in **msg.nbrowser** property and will have a pre-added goto method to navigate to the URL from an incoming **msg.payload**. After methods have been applied, the resulting HTML source is output in the **msg.payload**. Developers have the option of analyzing content in their flow before navigating or taking additional actions on a given page by simply dropping additional nbrowser nodes in their flow diagram. When used with the **[node-red-contrib-string](https://github.com/steveorevo/node-red-contrib-string)** node and the **switch** node, **nbrowser** enables an unprecedented level of versatility and functionality to the already powerful Node-RED set of capabilities.
 
-`WARNING: nbrowser is NOT sandboxed & could allow code injection by a`
-`malicious website owner. Do NOT use nbrowser with untrusted websites.`
+```
+// WARNING: nbrowser is NOT sandboxed & could allow code injection by a
+// malicious website owner. DO NOT use nbrowser with untrusted websites.
+```
 
 This might be useful for:
 
