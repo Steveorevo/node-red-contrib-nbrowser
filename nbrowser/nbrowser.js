@@ -4,12 +4,21 @@ module.exports = function(RED) {
     require('nightmare-upload')(Nightmare);
     function nbrowser(config) {
         RED.nodes.createNode(this, config);
+        var nbrowser_delay = 1500;
+        var nbrowser_queue = [];
+        var nbrowser_to = null;
         var ito = 0;
         this.on('input', function(msg) {
-            var globalContext = this.context().global;
-            var flowContext = this.context().flow;
+            if (typeof msg.nbrowser_delay != 'undefined') {
+                nbrowser_delay = msg.nbrowser_delay;
+            }
+            nbrowser_queue.push({msg:msg,node:this,config:config});
+            nbrowser_invoke();
+        });
+        function nbrowser_worker(msg, node, config) {
+            var globalContext = node.context().global;
+            var flowContext = node.context().flow;
             var nbrowser = getTypeInputValue(config.object, config.prop);
-            var node = this;
             clearTimeout(ito);
 
             // Create new or use existing browser
@@ -289,11 +298,11 @@ module.exports = function(RED) {
                           case 'onDownload':
                               return nbrowser.once('download', function(state, downloadItem){
                                   if(state == 'started') {
-                                      this.file = r[0].value;
-                                      nbrowser.emit('download', this.file, downloadItem);
+                                      node.file = r[0].value;
+                                      nbrowser.emit('download', node.file, downloadItem);
                                       nbrowser.downloadManager().waitDownloadsComplete();
                                   }
-                                  r = { status: state, file: this.file };
+                                  r = { status: state, file: node.file };
                                   processResults(r, m);
                               });
                               break;
@@ -375,7 +384,14 @@ module.exports = function(RED) {
                   var aMsgs = new Array(config.outputs).fill(null);
                   aMsgs[config.outputs-1] = msg;
                   node.send(aMsgs);
+                  return nbrowser;
                 }
+            });
+
+            // Resume next nbrowser instance
+            p = p.then(function(){
+                nbrowser_invoke();
+                return nbrowser;
             });
 
             // Catch any errors
@@ -388,8 +404,20 @@ module.exports = function(RED) {
                 if (typeof r !== 'undefined') {
                     node.error({"Error":r}, msg);
                 }
+                nbrowser_invoke();
             });
-        });
+        };
+        function nbrowser_invoke() {
+            if (nbrowser_to != null) {
+                clearTimeout(nbrowser_to);
+            }
+            nbrowser_to = setTimeout(function() {
+                if (nbrowser_queue.length != 0){
+                    var o = nbrowser_queue.shift();
+                    nbrowser_worker(o.msg, o.node, o.config);
+                }
+            }, nbrowser_delay);
+        };
     }
     RED.nodes.registerType("nbrowser", nbrowser);
 }
