@@ -199,6 +199,8 @@ The number of seconds to wait or the CSS selector to wait for to appear in the g
 ## Utility Functions
 **removeTargetAttr** - is a utility function that is callable from the evalJavaScript method. This function is useful to prevent a new window from spawning when clicking an anchor link. Instead, the existing browser window will be used for navigation.
 
+**msg.nbrowser_delay** - The delay between nbrowser nodes within the same flow; default is 1500ms but can be changed via the input to nbrowser. Increase this value to avoid `navigation error -3` and `ERR_ABORTED`.
+
 ## References
 The method operations are derived from open source [NightmareJS](http://www.nightmarejs.org) project.
 The official [node-red-contrib-nbrowser](https://github.com/steveorevo/node-red-contrib-nbrowser) project on GitHub.
