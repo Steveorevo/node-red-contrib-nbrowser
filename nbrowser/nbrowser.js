@@ -251,7 +251,9 @@ module.exports = function(RED) {
                     p = p.then(function(r) {
                         switch (m.name) {
                           case 'gotoURL':
-                              nbrowser.headers = r.headers;
+                              if (typeof r != 'undefined') {
+                                  nbrowser.headers = r.headers;
+                              }
                               processResults(r, m);
                               return true;
                               break;
