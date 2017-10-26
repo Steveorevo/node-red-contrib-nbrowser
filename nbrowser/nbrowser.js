@@ -384,7 +384,7 @@ module.exports = function(RED) {
                     node.status({});
                 }, 15000);
                 if (typeof r !== 'undefined') {
-                    node.error("Error: " + r, msg);
+                    node.error({"Error":r}, msg);
                 }
             });
         });
