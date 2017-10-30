@@ -103,6 +103,7 @@ module.exports = function(RED) {
             // Apply methods to the given node
             if (config.methods) {
                 var p = nbrowser;
+                var last_url = '';
                 config.methods.forEach(function(m, i) {
                     node.status({fill:"green",shape:"dot",text: "running: " + m.name });
                     var args = [];
@@ -130,7 +131,14 @@ module.exports = function(RED) {
                               }).then(function() {
                                   clearTimeout(ito);
                                   node.status({fill:"green",shape:"dot",text: "running: " + m.name });
-                                  return nbrowser.wait(250);
+                                  return nbrowser.url().then(function(r) {
+                                    if (r != last_url) {
+                                      last_url = r;
+                                      return nbrowser.wait(250);
+                                    }else{
+                                      return nbrowser;
+                                    }
+                                  });
                               });
 
                               // Catch wait failure
