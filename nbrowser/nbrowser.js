@@ -130,7 +130,7 @@ module.exports = function(RED) {
                               }).then(function() {
                                   clearTimeout(ito);
                                   node.status({fill:"green",shape:"dot",text: "running: " + m.name });
-                                  return nbrowser;
+                                  return nbrowser.wait(250);
                               });
 
                               // Catch wait failure
