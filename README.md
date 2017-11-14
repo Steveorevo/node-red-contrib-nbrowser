@@ -33,6 +33,8 @@ Run the following command in your Node-RED user directory (typically ~/.node-red
 
 The **nbrowser** node will appear in the palette under the advanced group.
 
+Note: You can install nbrowser using Node-RED's Manage Palette -> Install option; however, the current version requires that you restart the Node-RED server.
+
 ## Options
 ***Show browser window instance?***
 
