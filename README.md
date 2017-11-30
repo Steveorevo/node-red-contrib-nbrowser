@@ -44,6 +44,9 @@ Displays the Electron browser instance to aid development. Use Command (Mac) / C
 
 IMPORTANT! Use this option to destroy the browser instance after processing all methods or place an nbrowser node at the end of your flow with this option enabled to close an existing instance window. This is especially important when running in headless mode; otherwise it is not physically possible to close the window.
 
+***Ignore SSL certificate errors?***
+This option can be used to continue loading a web page when the given certificate is untrusted. Commonly used to allow self-signed certificates that are used during development.
+
 ## Methods
 The following methods can be used to navigate or analyze a given web page. Many of the methods below require a valid CSS selector to take effect. Unlike NightmereJS or PhantomJS, nbrowser will wait for the given CSS selector to appear; eliminating the need to insert additional wait methods. When present, a selector parameter may come from a literal string or any property of global, flow, or msg contexts. Selectors that fail to appear will generate a catchable timeout error.
 

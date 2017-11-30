@@ -23,7 +23,7 @@ module.exports = function(RED) {
 
             // Create new or use existing browser
             if (typeof nbrowser == 'undefined' || nbrowser == null) {
-                nbrowser = Nightmare({
+                let n = {
                     electronPath: require('../../electron'),
                     dock: config.show,
                     show: config.show,
@@ -31,7 +31,13 @@ module.exports = function(RED) {
                         preload: __dirname + '/preload.js',
                         images: config.show
                     }
-                });
+                };
+                if (config.ssl) {
+                  n.switches =  {
+                     'ignore-certificate-errors': true
+                   };
+                }
+                nbrowser = Nightmare(n);
                 setContextPropertyValue(config.object, config.prop, nbrowser);
             }
 

@@ -43,6 +43,13 @@ ul li span.param {
           <span>Close instance after methods?</span>
         </label>
     </div>
+    <div class="form-row" id="node-tail-ssl">
+        <label>&nbsp;</label>
+        <input type="checkbox" id="node-input-ssl" placeholder="Name" style="display: inline-block; width: auto; vertical-align: top;">
+        <label for="node-input-ssl" style="width: 70%;">
+          <span>Ignore SSL certificate errors?</span>
+        </label>
+    </div>
 </script>
 
 <script type="text/x-red" data-help-name="nbrowser">
@@ -54,6 +61,7 @@ ul li span.param {
       <dd>Displays the Electron browser instance to aid development. Use Command (Mac) / Ctrl (Windows) + Shift + I to display developer tools &amp; the DOM inspector. Note: image downloading is suppressed in headless mode but is turned on for convenience when this option is enabled.</dd>
       <dt class="optional">Close instance after methods?</dt> <dd><span class="exclaim">IMPORTANT!</span> Use this option to destroy the browser instance after processing all methods or place an <code>nbrowser</code> node at the end of your flow with this option enabled to close an existing instance window. This is esspecialy important when running in headless mode; otherwise it is not
       physically possible to close the window.</dd>
+      <dt class="optional">Ignore SSL certificate errors?</dt> <dd>This option can be used to continue loading a web page when the given certificate is untrusted. Commonly used to allow self-signed certificates that are used during development.</dd>
   </dl>
 
   <h3>Methods</h3>
@@ -348,6 +356,7 @@ ul li span.param {
             objectout: {value: 'msg'},
             close: {value: false},
             show: {value: false},
+            ssl: {value: false},
             outputs: {value: 1}
         },
         inputs:1,
