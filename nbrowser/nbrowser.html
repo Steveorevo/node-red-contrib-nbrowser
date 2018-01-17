@@ -809,7 +809,7 @@ ul li span.param {
             $('#node-input-method-container').css('min-height','300px').css('min-width','450px').editableList({
                 addItem: function(container, i, method) {
                     var row = $('<div/>', {class:"node-input-methods-applied"}).appendTo(container);
-                    var selectField = $('<select/>',{class:"node-input-method-type",style:"width:165px; margin-right:10px;"}).appendTo(row);
+                    var selectField = $('<select/>',{class:"node-input-method-type",style:"width:145px; margin-right:10px;"}).appendTo(row);
                     for (var i=0; i < methods.length; i++) {
                         if (typeof methods[i].func == 'undefined') {
                             methods[i].func = methods[i].name;
