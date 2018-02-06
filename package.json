@@ -20,10 +20,10 @@
     "url": "https://github.com/Steveorevo/node-red-contrib-nbrowser.git"
   },
   "dependencies": {
-    "nightmare": "git://github.com/segmentio/nightmare.git",
-    "nightmare-download-manager": "git://github.com/rosshinkley/nightmare-download-manager.git",
-    "nightmare-upload": "git://github.com/rosshinkley/nightmare-upload.git",
-    "node-unfluff": "git://github.com/ageitgey/node-unfluff.git"
+    "nightmare": "^2.10.0",
+    "nightmare-download-manager": "^0.2.4",
+    "nightmare-upload": "^0.1.1",
+    "unfluff": "^3.0.0"
   },
   "node-red": {
     "nodes": {
