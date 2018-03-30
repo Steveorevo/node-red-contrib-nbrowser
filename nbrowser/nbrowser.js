@@ -312,7 +312,7 @@ module.exports = function(RED) {
                           case 'onDownload':
                               return nbrowser.once('download', function(state, downloadItem){
                                   if(state == 'started') {
-                                      node.file = r[0].value;
+                                      node.file = getTypeInputValue(r[0].type, r[0].value);
                                       nbrowser.emit('download', node.file, downloadItem);
                                       nbrowser.downloadManager().waitDownloadsComplete();
                                   }
