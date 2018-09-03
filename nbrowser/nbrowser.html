@@ -842,13 +842,17 @@ ul li span.param {
                           if (i == 0) {
                             var paramDiv = $('<div/>',{style:"display:inline;"}).appendTo(row);
                           }else{
-                            var paramDiv = $('<div/>',{style:"display:block;margin-top:10px;"}).appendTo(row);
+                            if (p.default == 'output') {
+                            	var paramDiv = $('<div/>',{style:"display:block;margin-top:10px;"}).appendTo(row);
+                            }else{
+                            	var paramDiv = $('<div/>',{style:"display:block;"}).appendTo(row);
+                            }
                           }
 
                           // Mark outputs
                           if (i > 0) {
                               if (p.default == 'output') {
-                                $('<div style="display:inline-block;margin:7px 0px 7px 64px;">Send result to:</div>').appendTo(paramDiv);
+                                $('<div style="display:inline-block;margin:7px 4px 7px 50px;">Send result to:</div>').appendTo(paramDiv);
                               }else{
                                 $('<div style="display:inline-block;margin:7px 0px 7px;min-height:16px;"></div>').appendTo(paramDiv);
                               }
@@ -856,11 +860,16 @@ ul li span.param {
                           if (typeof p.placeholder == 'undefined'){
                               p.placeholder = '';
                           }
-                          $('<input/>',{class:"node-input-method-param" + i.toString(),
+                          var d = $('<input/>',{class:"node-input-method-param" + i.toString(),
                             type:"text",style:"width:222px;",
                             placeholder:p.placeholder, typeDefault:p.default})
                           .appendTo(paramDiv)
-                          .typedInput(p).parent().parent().css('float', 'right');
+                          .typedInput(p)
+                          .parent();
+                          d.parent().parent().css('display','inline-block');
+                          if (i == 1) {
+	                          d.css('float', 'right').css('margin-right', '22px');
+                          }
 
                           // Recalc outputs on type change
                           if (p.default == 'output') {
